@@ -26,8 +26,7 @@ import java.util.List;
 
 //@EActivity(R.layout.activity_main)
 //@OptionsMenu(R.menu.options)
-public class PDFViewActivity extends AppCompatActivity implements OnPageChangeListener, OnLoadCompleteListener,
-        OnPageErrorListener {
+public class PDFViewActivity extends AppCompatActivity {
 
     private static final String TAG = PDFViewActivity.class.getSimpleName();
 
@@ -93,12 +92,12 @@ public class PDFViewActivity extends AppCompatActivity implements OnPageChangeLi
 
         pdfView.fromAsset(SAMPLE_FILE)
                 .defaultPage(pageNumber)
-                .onPageChange(this)
+                //.onPageChange(this)
                 .enableAnnotationRendering(true)
-                .onLoad(this)
+                //.onLoad(this)
                 .scrollHandle(new DefaultScrollHandle(this))
                 .spacing(10) // in dp
-                .onPageError(this)
+                //.onPageError(this)
                 .pageFitPolicy(FitPolicy.BOTH)
                 .load();
     }
@@ -108,12 +107,12 @@ public class PDFViewActivity extends AppCompatActivity implements OnPageChangeLi
 
         pdfView.fromUri(uri)
                 .defaultPage(pageNumber)
-                .onPageChange(this)
+                //.onPageChange(this)
                 .enableAnnotationRendering(true)
-                .onLoad(this)
+                //.onLoad(this)
                 .scrollHandle(new DefaultScrollHandle(this))
                 .spacing(10) // in dp
-                .onPageError(this)
+                //.onPageError(this)
                 .load();
     }
 
@@ -196,8 +195,8 @@ public class PDFViewActivity extends AppCompatActivity implements OnPageChangeLi
         }
     }
 
-    @Override
+    /*@Override
     public void onPageError(int page, Throwable t) {
         Log.e(TAG, "Cannot load page " + page);
-    }
+    }*/
 }
