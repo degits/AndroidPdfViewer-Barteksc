@@ -15,17 +15,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
-import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
-import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
-import com.github.barteksc.pdfviewer.listener.OnPageErrorListener;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.shockwave.pdfium.PdfDocument;
 
 import java.util.List;
 
-//@EActivity(R.layout.activity_main)
-//@OptionsMenu(R.menu.options)
 public class PDFViewActivity extends AppCompatActivity {
 
     private static final String TAG = PDFViewActivity.class.getSimpleName();
@@ -47,43 +42,14 @@ public class PDFViewActivity extends AppCompatActivity {
 
     String pdfFileName;
 
-    //@OptionsItem(R.id.pickFile)
-    void pickFile() {
-        int permissionCheck = ContextCompat.checkSelfPermission(this,
-                READ_EXTERNAL_STORAGE);
-
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                    this,
-                    new String[]{READ_EXTERNAL_STORAGE},
-                    PERMISSION_CODE
-            );
-
-            return;
-        }
-
-        launchPicker();
-    }
-
-    void launchPicker() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("application/pdf");
-        try {
-            startActivityForResult(intent, REQUEST_CODE);
-        } catch (ActivityNotFoundException e) {
-            //alert user that file manager not working
-            Toast.makeText(this, R.string.toast_pick_file_error, Toast.LENGTH_SHORT).show();
-        }
-    }
-
     //@AfterViews
     void afterViews() {
         pdfView.setBackgroundColor(Color.LTGRAY);
-        if (uri != null) {
-            displayFromUri(uri);
-        } else {
-            displayFromAsset(SAMPLE_FILE);
-        }
+        //if (uri != null) {
+        //displayFromUri(uri);
+        //} else {
+        displayFromAsset(SAMPLE_FILE);
+        //}
         setTitle(pdfFileName);
     }
 
@@ -124,11 +90,6 @@ public class PDFViewActivity extends AppCompatActivity {
         }
     }
 
-    //@Override
-    public void onPageChanged(int page, int pageCount) {
-        pageNumber = page;
-        setTitle(String.format("%s %s / %s", pdfFileName, page + 1, pageCount));
-    }
 
     public String getFileName(Uri uri) {
         String result = null;
@@ -149,54 +110,4 @@ public class PDFViewActivity extends AppCompatActivity {
         }
         return result;
     }
-
-    //@Override
-    public void loadComplete(int nbPages) {
-        PdfDocument.Meta meta = pdfView.getDocumentMeta();
-        Log.e(TAG, "title = " + meta.getTitle());
-        Log.e(TAG, "author = " + meta.getAuthor());
-        Log.e(TAG, "subject = " + meta.getSubject());
-        Log.e(TAG, "keywords = " + meta.getKeywords());
-        Log.e(TAG, "creator = " + meta.getCreator());
-        Log.e(TAG, "producer = " + meta.getProducer());
-        Log.e(TAG, "creationDate = " + meta.getCreationDate());
-        Log.e(TAG, "modDate = " + meta.getModDate());
-
-        printBookmarksTree(pdfView.getTableOfContents(), "-");
-
-    }
-
-    public void printBookmarksTree(List<PdfDocument.Bookmark> tree, String sep) {
-        for (PdfDocument.Bookmark b : tree) {
-
-            Log.e(TAG, String.format("%s %s, p %d", sep, b.getTitle(), b.getPageIdx()));
-
-            if (b.hasChildren()) {
-                printBookmarksTree(b.getChildren(), sep + "-");
-            }
-        }
-    }
-
-    /**
-     * Listener for response to user permission request
-     *
-     * @param requestCode  Check that permission request code matches
-     * @param permissions  Permissions that requested
-     * @param grantResults Whether permissions granted
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
-                                           @NonNull int[] grantResults) {
-        if (requestCode == PERMISSION_CODE) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                launchPicker();
-            }
-        }
-    }
-
-    /*@Override
-    public void onPageError(int page, Throwable t) {
-        Log.e(TAG, "Cannot load page " + page);
-    }*/
 }
