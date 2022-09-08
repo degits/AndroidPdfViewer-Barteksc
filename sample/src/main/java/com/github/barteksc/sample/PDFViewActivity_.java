@@ -33,7 +33,6 @@ public final class PDFViewActivity_ extends PDFViewActivity implements HasViews,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         OnViewChangedNotifier previousNotifier = OnViewChangedNotifier.replaceNotifier(onViewChangedNotifier_);
-        //init_(savedInstanceState);
         OnViewChangedNotifier.registerOnViewChangedListener(this);          //added from init_() method
         //OnViewChangedNotifier.replaceNotifier(previousNotifier);
         setContentView(R.layout.activity_main);
@@ -57,22 +56,6 @@ public final class PDFViewActivity_ extends PDFViewActivity implements HasViews,
         afterViews();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.options, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId_ = item.getItemId();
-        if (itemId_ == R.id.pickFile) {
-            pickFile();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
