@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -41,6 +42,22 @@ public class PDFViewActivity extends AppCompatActivity {
     Integer pageNumber = 0;
 
     String pdfFileName;
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        System.out.println("onCreate ================================================================");
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        System.out.println(layoutResID + "================================================================");
+        super.setContentView(layoutResID);
+        this.pdfView = findViewById(R.id.pdfView);
+        afterViews();
+    }
 
     //@AfterViews
     void afterViews() {
