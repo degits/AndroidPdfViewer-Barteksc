@@ -26,18 +26,16 @@ import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedListener;
 import org.androidannotations.api.view.OnViewChangedNotifier;
 
-public final class PDFViewActivity_
-        extends PDFViewActivity
-        implements HasViews, OnViewChangedListener
-{
+public final class PDFViewActivity_ extends PDFViewActivity implements HasViews, OnViewChangedListener {
     private final OnViewChangedNotifier onViewChangedNotifier_ = new OnViewChangedNotifier();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        OnViewChangedNotifier previousNotifier = OnViewChangedNotifier.replaceNotifier(onViewChangedNotifier_);
-        init_(savedInstanceState);
         super.onCreate(savedInstanceState);
-        OnViewChangedNotifier.replaceNotifier(previousNotifier);
+        OnViewChangedNotifier previousNotifier = OnViewChangedNotifier.replaceNotifier(onViewChangedNotifier_);
+        //init_(savedInstanceState);
+        OnViewChangedNotifier.registerOnViewChangedListener(this);          //added from init_() method
+        //OnViewChangedNotifier.replaceNotifier(previousNotifier);
         setContentView(R.layout.activity_main);
     }
 
@@ -46,71 +44,17 @@ public final class PDFViewActivity_
         return ((T) this.findViewById(id));
     }
 
-    private void init_(Bundle savedInstanceState) {
-        OnViewChangedNotifier.registerOnViewChangedListener(this);
-        PDFViewActivity_.NonConfigurationInstancesHolder nonConfigurationInstance = ((PDFViewActivity_.NonConfigurationInstancesHolder) super.getLastCustomNonConfigurationInstance());
-        if (nonConfigurationInstance!= null) {
-            uri = nonConfigurationInstance.uri;
-            pageNumber = nonConfigurationInstance.pageNumber;
-        }
-
-    }
 
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
-        System.out.println("1st Method+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         onViewChangedNotifier_.notifyViewChanged(this);
-    }
-
-    /*@Override
-    public void setContentView(View view, LayoutParams params) {
-        super.setContentView(view, params);
-        System.out.println("2nd Method+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        onViewChangedNotifier_.notifyViewChanged(this);
-    }
-
-    @Override
-    public void setContentView(View view) {
-        super.setContentView(view);
-        System.out.println("3rd Method+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        onViewChangedNotifier_.notifyViewChanged(this);
-    }*/
-
-    public static PDFViewActivity_.IntentBuilder_ intent(Context context) {
-        return new PDFViewActivity_.IntentBuilder_(context);
-    }
-
-    public static PDFViewActivity_.IntentBuilder_ intent(android.app.Fragment fragment) {
-        return new PDFViewActivity_.IntentBuilder_(fragment);
-    }
-
-    public static PDFViewActivity_.IntentBuilder_ intent(android.support.v4.app.Fragment supportFragment) {
-        return new PDFViewActivity_.IntentBuilder_(supportFragment);
     }
 
     @Override
     public void onViewChanged(HasViews hasViews) {
         this.pdfView = hasViews.internalFindViewById(R.id.pdfView);
         afterViews();
-    }
-
-    @Override
-    public Object getLastCustomNonConfigurationInstance() {
-        PDFViewActivity_.NonConfigurationInstancesHolder nonConfigurationInstance = ((PDFViewActivity_.NonConfigurationInstancesHolder) super.getLastCustomNonConfigurationInstance());
-        if (nonConfigurationInstance == null) {
-            return null;
-        }
-        return nonConfigurationInstance.superNonConfigurationInstance;
-    }
-
-    @Override
-    public PDFViewActivity_.NonConfigurationInstancesHolder onRetainCustomNonConfigurationInstance() {
-        PDFViewActivity_.NonConfigurationInstancesHolder nonConfigurationInstanceState_ = new PDFViewActivity_.NonConfigurationInstancesHolder();
-        nonConfigurationInstanceState_.superNonConfigurationInstance = super.onRetainCustomNonConfigurationInstance();
-        nonConfigurationInstanceState_.uri = uri;
-        nonConfigurationInstanceState_.pageNumber = pageNumber;
-        return nonConfigurationInstanceState_;
     }
 
     @Override
@@ -140,59 +84,5 @@ public final class PDFViewActivity_
                 break;
             }
         }
-    }
-
-    public static class IntentBuilder_
-            extends ActivityIntentBuilder<PDFViewActivity_.IntentBuilder_>
-    {
-        private android.app.Fragment fragment_;
-        private android.support.v4.app.Fragment fragmentSupport_;
-
-        public IntentBuilder_(Context context) {
-            super(context, PDFViewActivity_.class);
-        }
-
-        public IntentBuilder_(android.app.Fragment fragment) {
-            super(fragment.getActivity(), PDFViewActivity_.class);
-            fragment_ = fragment;
-        }
-
-        public IntentBuilder_(android.support.v4.app.Fragment fragment) {
-            super(fragment.getActivity(), PDFViewActivity_.class);
-            fragmentSupport_ = fragment;
-        }
-
-        @Override
-        public PostActivityStarter startForResult(int requestCode) {
-            if (fragmentSupport_!= null) {
-                fragmentSupport_.startActivityForResult(intent, requestCode);
-            } else {
-                if (fragment_!= null) {
-                    if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-                        fragment_.startActivityForResult(intent, requestCode, lastOptions);
-                    } else {
-                        fragment_.startActivityForResult(intent, requestCode);
-                    }
-                } else {
-                    if (context instanceof Activity) {
-                        Activity activity = ((Activity) context);
-                        ActivityCompat.startActivityForResult(activity, intent, requestCode, lastOptions);
-                    } else {
-                        if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-                            context.startActivity(intent, lastOptions);
-                        } else {
-                            context.startActivity(intent);
-                        }
-                    }
-                }
-            }
-            return new PostActivityStarter(context);
-        }
-    }
-
-    private static class NonConfigurationInstancesHolder {
-        public Uri uri;
-        public Object superNonConfigurationInstance;
-        public Integer pageNumber;
     }
 }
