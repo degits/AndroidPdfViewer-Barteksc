@@ -22,17 +22,17 @@ public class PDFViewActivity extends AppCompatActivity {
     public void setContentView(int layoutResID) {   //   R.layout.activity_main = int layoutResID
 
 
-        //   01
+        //   Layer - 01
         super.setContentView(layoutResID);
 
         this.pdfView = findViewById(R.id.pdfView);
 
 
-        //   02
+        //   Layer - 02
         pdfView.setBackgroundColor(Color.CYAN);//.LTGRAY);
 
 
-        //   03
+        //   Layer - 03
         pdfView.fromAsset("sample.pdf")
                 .defaultPage(10)
                 //.onPageChange(this)
