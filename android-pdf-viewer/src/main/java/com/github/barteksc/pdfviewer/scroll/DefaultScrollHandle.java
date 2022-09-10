@@ -2,6 +2,7 @@ package com.github.barteksc.pdfviewer.scroll;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
@@ -17,9 +18,9 @@ import com.github.barteksc.pdfviewer.util.Util;
 
 public class DefaultScrollHandle extends RelativeLayout implements ScrollHandle {
 
-    private final static int HANDLE_LONG = 65;
-    private final static int HANDLE_SHORT = 40;
-    private final static int DEFAULT_TEXT_SIZE = 16;
+    private final static int HANDLE_LONG = 35;
+    private final static int HANDLE_SHORT = 25;
+    private final static int DEFAULT_TEXT_SIZE = 10;
 
     private float relativeHandlerMiddle = 0f;
 
@@ -46,9 +47,11 @@ public class DefaultScrollHandle extends RelativeLayout implements ScrollHandle 
         this.context = context;
         this.inverted = inverted;
         textView = new TextView(context);
-        setVisibility(INVISIBLE);
-        setTextColor(Color.BLACK);
+        setVisibility(VISIBLE);
+        setTextColor(Color.WHITE);
         setTextSize(DEFAULT_TEXT_SIZE);
+        //By me
+        setTextBold();
     }
 
     @Override
@@ -182,7 +185,7 @@ public class DefaultScrollHandle extends RelativeLayout implements ScrollHandle 
 
     @Override
     public void hide() {
-        setVisibility(INVISIBLE);
+        setVisibility(VISIBLE);
     }
 
     public void setTextColor(int color) {
@@ -195,6 +198,12 @@ public class DefaultScrollHandle extends RelativeLayout implements ScrollHandle 
     public void setTextSize(int size) {
         textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, size);
     }
+
+    //This method was added by me, to bold the TextView
+    public void setTextBold() {
+        textView.setTypeface(null, Typeface.BOLD);
+    }
+    //
 
     private boolean isPDFViewReady() {
         return pdfView != null && pdfView.getPageCount() > 0 && !pdfView.documentFitsView();
