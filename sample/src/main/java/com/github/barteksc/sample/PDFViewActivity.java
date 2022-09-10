@@ -41,7 +41,7 @@ public class PDFViewActivity extends AppCompatActivity {
                 .scrollHandle(new DefaultScrollHandle(this))
                 .spacing(10) // in dp
                 //.onPageError(this)
-                .pageFitPolicy(FitPolicy.BOTH)
+                .pageFitPolicy(FitPolicy.WIDTH)
                 .load();
     }
 }
